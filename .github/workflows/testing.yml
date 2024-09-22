@@ -24,4 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Checkout
-
+      - name: Validate
+        run: |
+          echo "Needs Export: ${{ needs.job_1.outputs.foo }}
