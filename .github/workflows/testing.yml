@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       foo: ${{ steps.set-output.outputs.foo }}
+      json: ${{ steps.parse-json.outputs.json }}
     steps:
       - uses: actions/checkout@v4
         name: Checkout
@@ -17,6 +18,11 @@ jobs:
         run: |
           foo=$(echo 'bar')
           echo "foo=$foo" >> $GITHUB_OUTPUT
+      - name: Parse JSON
+        id: parse-json
+        run: |
+          json=$(jq -c '.' < test.json)
+          echo "json=$json" >> $GITHUB_OUTPUT
 
   job_2:
     runs-on: ubuntu-latest
@@ -26,4 +32,5 @@ jobs:
         name: Checkout
       - name: Validate
         run: |
-          echo "Needs Export: ${{ needs.job_1.outputs.foo }}
+          echo "Needs Export: ${{ needs.job_1.outputs.foo }}"
+          echo "Needs Export: ${{ needs.job_1.outputs.json }}"
